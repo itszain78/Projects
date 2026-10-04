@@ -69,7 +69,7 @@ function seoPlugin() {
 
   // Crawlable HTML inside #root; React replaces it on mount.
   const fallback = () => `
-<div style="max-width:56rem;margin:0 auto;padding:7rem 1rem 3rem;font-family:system-ui,sans-serif;color:#0f172a">
+<div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">
   <h1>${esc(config.name)} — ${esc(config.title)} in ${esc(config.location)}</h1>
   <p>${esc(config.bio)}</p>
   <nav aria-label="Primary"><a href="#about">About</a> · <a href="#skills">Skills</a> · <a href="#services">Services</a> · <a href="#projects">Projects</a> · <a href="#contact">Contact</a></nav>

@@ -8,7 +8,32 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
 
-  const submit = (e) => { e.preventDefault(); setSent(true); };
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setSending(true);
+    setError(false);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: 'a3f9d749-42cd-42d1-ae78-68819c61f07f',
+          subject: `Portfolio inquiry from ${form.name}`,
+          ...form,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) setSent(true);
+      else setError(true);
+    } catch {
+      setError(true);
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-24 relative">
@@ -155,9 +180,10 @@ export default function Contact() {
                     <textarea required rows={4} value={form.message} onChange={e => setForm({...form, message: e.target.value})} placeholder="Describe your project goals, features, or timeline..."
                       className="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm focus:border-blue-600 focus:outline-none transition-colors resize-none shadow-2xs" />
                   </div>
-                  <button type="submit"
+                  {error && <p className="text-xs text-red-600 font-semibold">Something went wrong. Please try WhatsApp instead.</p>}
+                  <button type="submit" disabled={sending}
                     className="btn-shine w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2">
-                    <Send className="w-4 h-4" /> Send Message
+                    <Send className="w-4 h-4" /> {sending ? 'Sending...' : 'Send Message'}
                   </button>
                 </form>
               )}

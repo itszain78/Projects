@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /projects/academic-portal/config/
+Disallow: /projects/academic-portal/api/
+
+Sitemap: https://zain-portfolio-wheat.vercel.app/sitemap.xml

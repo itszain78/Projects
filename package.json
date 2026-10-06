@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "lucide-react": "latest",
     "react": "^19.0.0",
@@ -20,4 +21,6 @@
     "tailwindcss": "latest",
     "vite": "^6.3.5"
   }
+}
+
 }

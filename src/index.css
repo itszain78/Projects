@@ -397,3 +397,35 @@
   isolation: isolate;
   transform: translateZ(0);
 }
+
+
+/* ───────── Glassmorphism + linear-gradient theme (overrides) ───────── */
+:root {
+  --glass-bg: linear-gradient(135deg, rgba(255,255,255,0.62), rgba(255,255,255,0.28));
+  --glass-border: rgba(255,255,255,0.65);
+  --glass-shadow: 0 8px 32px rgba(31,80,140,0.14), inset 0 1px 0 rgba(255,255,255,0.8);
+  --grad-primary: linear-gradient(135deg, #38bdf8 0%, #6366f1 55%, #a855f7 100%);
+  --grad-sunset:  linear-gradient(135deg, #22d3ee 0%, #6366f1 60%, #d946ef 100%);
+  --grad-cool:    linear-gradient(135deg, #67e8f9 0%, #38bdf8 50%, #818cf8 100%);
+  --grad-mint:    linear-gradient(135deg, #5eead4 0%, #38bdf8 100%);
+  --grad-text:    linear-gradient(100deg, #0891b2 0%, #4f46e5 50%, #c026d3 100%);
+}
+body {
+  background-image:
+    radial-gradient(60rem 40rem at 10% -10%, rgba(56,189,248,0.35), transparent 60%),
+    radial-gradient(50rem 40rem at 95% 10%, rgba(168,85,247,0.28), transparent 60%),
+    radial-gradient(50rem 40rem at 50% 110%, rgba(45,212,191,0.28), transparent 60%),
+    linear-gradient(160deg, #eef8ff 0%, #f1efff 55%, #effcf9 100%);
+  background-attachment: fixed;
+}
+.card, .field, .chip, nav, .modal, [role="dialog"] > div {
+  background-image: var(--glass-bg);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.card:hover { box-shadow: 0 24px 60px -24px rgba(99,102,241,0.45), inset 0 1px 0 rgba(255,255,255,0.9); }
+.btn-primary { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+@supports not (backdrop-filter: blur(1px)) { .card, .field, .chip, nav { background: rgba(255,255,255,0.88); } }
+@media (prefers-reduced-transparency: reduce) { .card, .field, .chip, nav { backdrop-filter: none; background: #fff; } }

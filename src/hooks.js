@@ -200,11 +200,15 @@ export function useTypewriter(words, { type = 70, erase = 35, hold = 1600 } = {}
 export function useModal(onClose) {
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    const trigger = document.activeElement;
+    const dlg = document.querySelector('[data-modal], .modal, [role="dialog"]');
+    if (dlg) { dlg.setAttribute('role', 'dialog'); dlg.setAttribute('aria-modal', 'true'); }
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', onKey);
     return () => {
       document.body.style.overflow = prev;
+      trigger?.focus?.();
       window.removeEventListener('keydown', onKey);
     };
   }, [onClose]);

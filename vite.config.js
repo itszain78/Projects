@@ -24,7 +24,7 @@ function seoPlugin() {
         ...(siteUrl && { url: siteUrl, image: abs('/og-image.png') }),
         address: { '@type': 'PostalAddress', addressLocality: 'Multan', addressCountry: 'PK' },
         alumniOf: { '@type': 'CollegeOrUniversity', name: 'NFC Institute of Engineering & Technology, Multan' },
-        knowsAbout: ['PHP', 'MySQL', 'JavaScript', 'HTML5', 'CSS3', 'Tailwind CSS', 'REST API', 'Web Development'],
+        knowsAbout: ['PHP', 'MySQL', 'JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'Java', 'C++', 'REST API', 'Full-Stack Web Development'],
         sameAs: [config.github, config.linkedin, config.twitter].filter(Boolean),
       },
       {
@@ -39,7 +39,7 @@ function seoPlugin() {
         '@type': 'ProfessionalService',
         '@id': abs('/#service') || '#service',
         name: `${config.name} — Web Development Services`,
-        description: 'Custom PHP and MySQL web applications, business websites, landing pages and admin panels.',
+        description: 'Full-stack React, Node.js, PHP and MySQL web applications, business websites, landing pages and admin panels.',
         ...(siteUrl && { url: siteUrl, image: abs('/og-image.png') }),
         provider: { '@id': abs('/#person') || '#person' },
         areaServed: 'Worldwide',
@@ -102,7 +102,7 @@ function seoPlugin() {
       return { html: html.replace('<!--seo-fallback-->', fallback()), tags }
     },
     generateBundle() {
-      const robots = ['User-agent: *', 'Allow: /', 'Disallow: /projects/academic-portal/config/', 'Disallow: /projects/academic-portal/api/']
+      const robots = ['User-agent: *', 'Allow: /']
       if (siteUrl) robots.push('', `Sitemap: ${siteUrl}/sitemap.xml`)
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robots.join('\n') + '\n' })
       if (siteUrl) {

@@ -11,7 +11,7 @@ export default function Services({ est, onCalc }) {
     <section id="services" className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader icon={Sparkles} badge="Web Services" title="What I Build" accent="for Clients"
-          text="From custom PHP/MySQL backends to responsive modern frontends — tailored for your business." />
+          text="From React and Next.js applications to SQL-backed stores and portals — tailored for your business." />
 
         {/* Service cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">

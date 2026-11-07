@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Cpu, Layers, Server, Wrench } from 'lucide-react';
+import { Cpu, Code2, Layers, Monitor, Server, Wrench } from 'lucide-react';
 import { config } from '../config.js';
 import { useInView, useAnimatedNumber } from '../hooks.js';
 import SectionHeader from './SectionHeader.jsx';
 
 const TABS = config.skills.map((s) => s.cat);
-const TAB_ICONS = [Layers, Server, Wrench];
+const TAB_ICONS = [Code2, Layers, Monitor, Server, Wrench];
 
 function SkillCard({ skill, index, play }) {
   const pct = useAnimatedNumber(play ? skill.pct : 0, 1300, true);
@@ -40,7 +40,7 @@ export default function Skills() {
     <section id="skills" className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader icon={Cpu} badge="Technical Proficiency" title="Skills &" accent="Expertise"
-          text="Certified skills across frontend development, backend logic, and software engineering." />
+          text="Languages and tools I use in my shipped projects, from TypeScript and React to SQL and Supabase." />
 
         {/* Tabs with gradient pill */}
         <div className="fade-up flex flex-wrap justify-center gap-2.5 mb-10" role="tablist">

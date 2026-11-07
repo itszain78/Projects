@@ -6,11 +6,11 @@ import { useTypewriter } from '../hooks.js';
 const statItems = [
   { val: 'NFC IET',   label: 'University',    sub: 'BS Software Engineering' },
   { val: 'Corvit',    label: 'Certification', sub: 'Web Development' },
-  { val: 'PHP & SQL', label: 'Core Stack',    sub: 'Full-Stack Engineering' },
+  { val: 'TypeScript & SQL', label: 'Core Stack', sub: 'React · Next.js · Supabase' },
   { val: 'On-Time',   label: 'Delivery',      sub: 'Clean & High Performance' },
 ];
 
-const roles = ['Clean Code', 'Custom PHP Backends', 'MySQL Databases', 'Responsive Interfaces', 'Fast Web Apps'];
+const roles = ['Clean Code', 'React & Next.js Apps', 'TypeScript Backends', 'Supabase Databases', 'Responsive Interfaces', 'Fast Web Apps'];
 
 function Typed() {
   const text = useTypewriter(roles);
@@ -43,9 +43,9 @@ export default function Hero({ onCalc }) {
   };
 
   const floaters = [
-    { t: 'PHP 8',   cls: 'top-[18%] left-[6%]',    f: 'float-a', k: 38,  g: 'from-sky-200 to-sky-200' },
-    { t: 'MySQL',   cls: 'top-[30%] right-[5%]',   f: 'float-b', k: -46, g: 'from-sky-200 to-sky-200' },
-    { t: 'JS ES6+', cls: 'bottom-[26%] left-[4%]', f: 'float-c', k: 30,  g: 'from-amber-200 to-sky-200' },
+    { t: 'Next.js',  cls: 'top-[18%] left-[6%]',    f: 'float-a', k: 38,  g: 'from-sky-200 to-sky-200' },
+    { t: 'TypeScript', cls: 'top-[30%] right-[5%]',   f: 'float-b', k: -46, g: 'from-sky-200 to-sky-200' },
+    { t: 'Supabase', cls: 'bottom-[26%] left-[4%]', f: 'float-c', k: 30,  g: 'from-amber-200 to-sky-200' },
     { t: 'Tailwind',cls: 'bottom-[20%] right-[7%]',f: 'float-a', k: -34, g: 'from-sky-200 to-sky-200' },
   ];
 

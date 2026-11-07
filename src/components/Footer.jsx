@@ -10,7 +10,7 @@ const navLinks = [
   { id: 'contact',  label: 'Contact' },
 ];
 
-const marquee = ['PHP 8+', 'MySQL', 'JavaScript', 'HTML5', 'CSS3', 'Tailwind CSS', 'REST APIs', 'Git', 'cPanel', 'Responsive Design'];
+const marquee = ['TypeScript', 'React 19', 'Next.js 15', 'Tailwind CSS', 'Supabase', 'PostgreSQL', 'Zod', 'Vitest', 'REST APIs', 'PHP', 'MySQL', 'Git', 'Vercel', 'Responsive Design'];
 
 export default function Footer() {
   const initial = config.name.charAt(0).toUpperCase();
@@ -43,7 +43,7 @@ export default function Footer() {
               <span className="text-xl font-display font-bold text-[var(--text)]">{config.name}</span>
             </div>
             <p className="text-[var(--text-soft)] text-sm max-w-sm leading-relaxed mb-5 font-medium">
-              Full-Stack Web Developer & BS Software Engineering student at NFC IET Multan. Building fast, responsive web applications using PHP, SQL, JavaScript, and clean architecture.
+              Full-Stack Web Developer & BS Software Engineering student at NFC IET Multan. Building fast, responsive web applications using TypeScript, React, Next.js, SQL, and clean architecture.
             </p>
             <div className="text-xs font-bold flex items-center gap-2 text-sky-700">
               <Sparkles className="w-3.5 h-3.5 text-amber-700" /> Certified by Corvit Systems Multan

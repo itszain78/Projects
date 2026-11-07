@@ -32,9 +32,8 @@ function DetailModal({ project, onClose }) {
         </button>
         <span className="grad-text text-xs font-bold uppercase tracking-wider block mb-1 w-fit">{project.cat}</span>
         <h3 className="text-xl sm:text-2xl font-bold text-[var(--text)] mb-4 pr-10">{project.title}</h3>
-        <div className="relative rounded-2xl overflow-hidden mb-5 border border-sky-500/15">
-          <img src={project.img} alt={`${project.title} — ${project.cat} project by Zain Ul Haseeb`} width="800" height="533" decoding="async" className="w-full h-52 object-cover" />
-          <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(180deg, transparent 55%, rgba(255, 255, 255,0.7))' }} />
+        <div className="relative rounded-2xl overflow-hidden mb-5 border border-sky-500/15" style={{ aspectRatio: '1200 / 630', backgroundImage: 'linear-gradient(135deg,#c7e9fe,#cfeafb)' }}>
+          <img src={project.img} alt={`${project.title} — ${project.cat} project by Zain Ul Haseeb`} width="1200" height="630" decoding="async" className="absolute inset-0 w-full h-full object-contain block" />
         </div>
         {project.status && (
           <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-100 border border-amber-300/30 text-amber-700 text-xs sm:text-sm font-semibold mb-5">
@@ -100,10 +99,9 @@ export default function Projects() {
               <div data-tilt="5" className="card spot group overflow-hidden flex flex-col h-full">
                 <span className="spot-glow" />
                 {/* Image */}
-                <div className="relative h-52 overflow-hidden" style={{ backgroundImage: 'linear-gradient(135deg,#c7e9fe,#cfeafb)' }}>
-                  <img src={p.img} alt={`${p.title} — ${p.cat} project by Zain Ul Haseeb`} width="800" height="533" loading="lazy" decoding="async"
-                    className="w-full h-full object-cover text-transparent group-hover:scale-110 group-hover:rotate-[0.6deg] transition-transform duration-700 ease-out" />
-                  <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(180deg, rgba(199, 233, 254,0.05) 0%, rgba(255, 255, 255,0.55) 100%)' }} />
+                <div className="relative overflow-hidden" style={{ aspectRatio: '1200 / 630', backgroundImage: 'linear-gradient(135deg,#c7e9fe,#cfeafb)' }}>
+                  <img src={p.img} alt={`${p.title} — ${p.cat} project by Zain Ul Haseeb`} width="1200" height="630" loading="lazy" decoding="async"
+                    className="absolute inset-0 w-full h-full object-contain block text-transparent group-hover:scale-105 transition-transform duration-700 ease-out" />
                   {p.status && (
                     <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold bg-amber-100/90 backdrop-blur text-amber-800 border border-amber-300 flex items-center gap-1.5">
                       <Clock className="w-3 h-3" /> {p.status}

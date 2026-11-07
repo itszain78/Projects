@@ -1,35 +1,39 @@
 import { useState } from 'react';
 import {
   Check, MessageSquare, Mail, Copy, RotateCcw, Clock, Database, LayoutDashboard,
-  Smartphone, Gauge, Wand2, Rocket, Globe, Server, Layers, Sparkles,
+  Smartphone, Gauge, Wand2, Rocket, Globe, Server, Layers, Sparkles, ShoppingCart, School, CreditCard, Cloud,
+  FlaskConical, Plug, ShieldCheck,
 } from 'lucide-react';
 import { config } from '../config.js';
 import { useAnimatedNumber } from '../hooks.js';
 
-const scopeIcon = { landing: Rocket, business: Globe, app: Server, portal: Layers };
-const addonIcon = { db: Database, admin: LayoutDashboard, resp: Smartphone, seo: Gauge };
+const scopeIcon = { landing: Rocket, business: Globe, app: Server, portal: Layers, fullstack: Layers, store: ShoppingCart, system: School };
+const addonIcon = { db: Database, supa: Cloud, admin: LayoutDashboard, auth: ShieldCheck, pay: CreditCard, api: Plug, email: Mail, resp: Smartphone, seo: Gauge, test: FlaskConical };
 
 // Suggested add-ons per scope (one-click "add suggested")
 const SUGGESTED = {
-  landing:  ['resp', 'seo'],
-  business: ['resp', 'seo'],
-  app:      ['db', 'admin'],
-  portal:   ['db', 'admin', 'seo'],
+  landing:   ['resp', 'seo'],
+  business:  ['resp', 'seo'],
+  app:       ['db', 'admin'],
+  portal:    ['db', 'admin', 'seo'],
+  fullstack: ['supa', 'auth', 'seo'],
+  store:     ['supa', 'admin', 'pay', 'email', 'seo'],
+  system:    ['supa', 'auth', 'admin', 'email'],
 };
 
 /** Shared estimator — `est` comes from useEstimatorState so inline + modal stay in sync. */
 export default function Estimator({ est, compact = false }) {
-  const { scope, setScope, addons, setAddons, toggle, reset, curr, picked, total, maxTotal, quoteText } = est;
+  const { scope, setScope, addons, setAddons, toggle, reset, curr, picked, total, maxTotal, quoteText, currency, setCurrency, daysLabel, money, convert, convertedTotal, symbol } = est;
   const [copied, setCopied] = useState(false);
 
-  const animTotal = useAnimatedNumber(total, 700, false);
+  const animTotal = useAnimatedNumber(convertedTotal, 700, false);
   const pct = Math.max(8, Math.round((total / maxTotal) * 100));
 
   const suggested = (SUGGESTED[scope] || []).filter((id) => config.addons.some((a) => a.id === id));
   const missing = suggested.filter((id) => !addons.includes(id));
 
   const waHref = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(quoteText)}`;
-  const mailHref = `mailto:${config.email}?subject=${encodeURIComponent(`Project quote — ${curr.label} ($${total})`)}&body=${encodeURIComponent(quoteText)}`;
+  const mailHref = `mailto:${config.email}?subject=${encodeURIComponent(`Project quote — ${curr.label} (${symbol}${convertedTotal.toLocaleString('en-US')})`)}&body=${encodeURIComponent(quoteText)}`;
 
   const copy = async () => {
     try { await navigator.clipboard.writeText(quoteText); } catch { /* ignore */ }
@@ -43,6 +47,19 @@ export default function Estimator({ est, compact = false }) {
     <div className={`grid gap-6 ${compact ? 'grid-cols-1' : 'lg:grid-cols-[1.15fr_0.85fr]'} items-start`}>
       {/* ───────── Left: choices ───────── */}
       <div className="space-y-7">
+        {/* Currency */}
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-sky-700">Show prices in</span>
+          <div className="inline-flex rounded-full p-1 bg-sky-500/10 border border-sky-300/30" role="radiogroup" aria-label="Currency">
+            {['USD', 'PKR'].map((c) => (
+              <button key={c} role="radio" aria-checked={currency === c} onClick={() => setCurrency(c)}
+                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${currency === c ? 'btn-primary shadow' : 'text-[var(--text-soft)] hover:text-[var(--text)]'}`}>
+                {c === 'USD' ? '$ USD' : 'Rs PKR'}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Step 1 */}
         <div>
           <div className="flex items-center gap-3 mb-3.5">
@@ -63,8 +80,9 @@ export default function Estimator({ est, compact = false }) {
                     <span className="est-radio" />
                   </div>
                   <div className="font-bold text-sm text-[var(--text)] mb-1">{p.label}</div>
+                  {p.example && <div className="text-[10px] font-bold uppercase tracking-wider text-sky-700 mb-1.5">{p.example}</div>}
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-[var(--text-soft)] font-semibold">from <b className="text-[var(--text)] font-extrabold">${p.base}</b></span>
+                    <span className="text-[var(--text-soft)] font-semibold">from <b className="text-[var(--text)] font-extrabold">{money(p.base)}</b></span>
                     <span className="flex items-center gap-1 text-[var(--text-muted)] font-medium"><Clock className="w-3 h-3" /> {p.time}</span>
                   </div>
                 </button>
@@ -103,7 +121,10 @@ export default function Estimator({ est, compact = false }) {
                       </div>
                       {rec && !on && <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Suggested</span>}
                     </div>
-                    <span className="font-display font-extrabold text-sm text-[var(--text)] shrink-0">+${a.price}</span>
+                    <span className="text-right shrink-0">
+                      <span className="block font-display font-extrabold text-sm text-[var(--text)]">+{money(a.price)}</span>
+                      {a.days > 0 && <span className="block text-[10px] font-medium text-[var(--text-muted)]">+{a.days} day{a.days > 1 ? 's' : ''}</span>}
+                    </span>
                   </div>
                 </button>
               );
@@ -114,7 +135,7 @@ export default function Estimator({ est, compact = false }) {
 
       {/* ───────── Right: live quote ───────── */}
       <div className={`est-summary p-6 sm:p-7 relative ${compact ? '' : 'lg:sticky lg:top-28'}`}>
-        <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full pointer-events-none\" style={{ backgroundImage: 'radial-gradient(circle, rgba(125, 202, 250,0.38) 0%, rgba(94, 180, 234,0.16) 45%, rgba(255, 255, 255,0) 70%)' }} />
+        <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(125, 202, 250,0.38) 0%, rgba(94, 180, 234,0.16) 45%, rgba(255, 255, 255,0) 70%)' }} />
         <div className="relative">
           <div className="flex items-center justify-between mb-1">
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-sky-700">Your estimate</span>
@@ -124,12 +145,12 @@ export default function Estimator({ est, compact = false }) {
               </button>
             )}
           </div>
-          <div className="est-total text-5xl sm:text-6xl text-[var(--text)] flex items-start gap-1 mb-1">
-            <span className="text-2xl sm:text-3xl mt-2 text-sky-700">$</span>
-            <span key={total} className="pop grad-text">{animTotal}</span>
+          <div className="est-total text-5xl sm:text-6xl text-[var(--text)] flex items-start gap-1 mb-1" aria-live="polite" aria-atomic="true">
+            <span className="text-2xl sm:text-3xl mt-2 text-sky-700">{symbol.trim()}</span>
+            <span key={`${total}-${currency}`} className="pop grad-text">{animTotal.toLocaleString('en-US')}</span>
           </div>
           <div className="flex items-center gap-1.5 text-xs font-semibold text-sky-700 mb-5">
-            <Clock className="w-3.5 h-3.5" /> Delivery in <b className="text-[var(--text)]">{curr.time}</b>
+            <Clock className="w-3.5 h-3.5" /> Delivery in about <b className="text-[var(--text)]">{daysLabel}</b>
           </div>
 
           {/* Size meter */}
@@ -143,16 +164,16 @@ export default function Estimator({ est, compact = false }) {
           {/* Breakdown */}
           <div className="rounded-2xl bg-white/65 border border-sky-300/30 p-4 mb-5 space-y-2.5 text-xs">
             <div className="flex justify-between font-semibold text-[var(--text)]" key={scope}>
-              <span className="line-in">{curr.label}</span><span className="line-in">${curr.base}</span>
+              <span className="line-in">{curr.label}</span><span className="line-in">{money(curr.base)}</span>
             </div>
             {picked.map((a) => (
               <div key={a.id} className="line-in flex justify-between text-sky-700 font-medium">
-                <span>+ {a.label}</span><span>${a.price}</span>
+                <span>+ {a.label}</span><span>{money(a.price)}</span>
               </div>
             ))}
             {picked.length === 0 && <div className="text-sky-700/70 italic">No extras selected</div>}
             <div className="pt-2.5 border-t border-sky-500/15 flex justify-between font-extrabold text-sm text-[var(--text)]">
-              <span>Total</span><span>${total}</span>
+              <span>Total</span><span>{symbol}{convertedTotal.toLocaleString('en-US')}</span>
             </div>
           </div>
 
@@ -168,7 +189,7 @@ export default function Estimator({ est, compact = false }) {
               </button>
             </div>
           </div>
-          <p className="text-[10px] text-sky-700/70 mt-4 leading-relaxed">Starting estimate — the final price is confirmed after we discuss your exact requirements.</p>
+          <p className="text-[10px] text-sky-700/70 mt-4 leading-relaxed">Starting estimate{currency === 'PKR' ? ' (approximate PKR rate)' : ''}. The final price and timeline are confirmed after we discuss your exact requirements.</p>
         </div>
       </div>
     </div>

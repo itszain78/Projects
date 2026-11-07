@@ -40,7 +40,7 @@ function InfoRow({ icon: Icon, label, children, grad, copyText, delay }) {
 }
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', service: 'Full-Stack PHP/SQL Web App', budget: '$30 - $100', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', service: 'Full-Stack Web App (React / Next.js)', budget: '$30 - $100', message: '' });
   const [sent, setSent] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
   const [sending, setSending] = useState(false);
@@ -158,9 +158,11 @@ export default function Contact() {
                     <div>
                       <label htmlFor="c-service" className="block text-[11px] font-bold text-[var(--text-soft)] uppercase tracking-wider mb-2">Required Service</label>
                       <select id="c-service" value={form.service} onChange={set('service')} className="field">
-                        <option>Full-Stack PHP/SQL Web App</option>
+                        <option>Full-Stack Web App (React / Next.js)</option>
+                        <option>E-Commerce Store</option>
+                        <option>Management System / Portal</option>
                         <option>Modern UI Web Design</option>
-                        <option>PHP & Database Backend</option>
+                        <option>Database & Backend (SQL / PHP)</option>
                         <option>Custom Web Application</option>
                       </select>
                     </div>

@@ -3,9 +3,10 @@ import { config } from '../config.js';
 import { useModal } from '../hooks.js';
 
 const skillGroups = [
-  { label: 'Web Stack:', val: 'HTML5, CSS3, JavaScript (ES6+), PHP 8+' },
-  { label: 'Database:', val: 'SQL, MySQL Relational Design' },
-  { label: 'Tools:', val: 'Git, Tailwind CSS, cPanel, REST APIs' },
+  { label: 'Languages:', val: 'TypeScript, JavaScript (ES6+), SQL, PHP 8+, Python, Java, C/C++' },
+  { label: 'Web Stack:', val: 'React 19, Next.js 15, Vite, Tailwind CSS, HTML5, CSS3' },
+  { label: 'Database:', val: 'Supabase / PostgreSQL (RLS), MySQL Relational Design' },
+  { label: 'Tools:', val: 'Git, Zod, Vitest, Playwright, Vercel, Docker, REST APIs' },
   { label: 'Engineering:', val: 'OOP, Data Structures, Software Design' },
 ];
 
@@ -15,7 +16,7 @@ export default function ResumeModal({ onClose }) {
   return (
     <div className="modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }} role="dialog" aria-modal="true" aria-label="Resume">
       <div className="modal-panel max-w-2xl p-6 sm:p-10">
-        <div className="absolute -top-24 -left-16 w-72 h-72 rounded-full pointer-events-none\" style={{ backgroundImage: 'radial-gradient(circle, rgba(125, 202, 250,0.38) 0%, rgba(94, 180, 234,0.16) 45%, rgba(255, 255, 255,0) 70%)' }} />
+        <div className="absolute -top-24 -left-16 w-72 h-72 rounded-full pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(125, 202, 250,0.38) 0%, rgba(94, 180, 234,0.16) 45%, rgba(255, 255, 255,0) 70%)' }} />
         <button onClick={onClose} className="absolute top-5 right-5 z-10 p-2 rounded-full bg-sky-500/10 text-sky-900/70 hover:text-sky-900 hover:bg-sky-500/20 hover:rotate-90 transition-all duration-300" aria-label="Close">
           <X className="w-5 h-5" />
         </button>

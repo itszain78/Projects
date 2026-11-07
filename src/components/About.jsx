@@ -7,7 +7,7 @@ import SectionHeader from './SectionHeader.jsx';
 const timeline = [
   { period: '2024 – 2028 (Current)', title: 'BS Software Engineering', inst: 'NFC IET Multan', badge: 'Undergraduate', desc: 'Studying Relational SQL Databases, OOP, Data Structures & Algorithms, Software Architecture, and Web Engineering.' },
   { period: 'Certified Professional', title: 'Web Development Certification', inst: 'Corvit Systems Multan', badge: 'Completed', desc: 'Hands-on practical training in HTML5, CSS3, JavaScript, PHP backend, and MySQL database management.' },
-  { period: 'Ongoing', title: 'Freelance Web Developer', inst: 'Remote & Client Projects', badge: 'Active', desc: 'Building modern, responsive websites and custom PHP/SQL web applications for clients.' },
+  { period: 'Ongoing', title: 'Freelance Web Developer', inst: 'Remote & Client Projects', badge: 'Active', desc: 'Building modern, responsive websites and full-stack web applications (React, Next.js, TypeScript and PHP/SQL) for clients.' },
 ];
 
 // "Click to view certificate" — opens ONLY the certificate image. Hidden if the file is missing.

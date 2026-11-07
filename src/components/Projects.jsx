@@ -1,11 +1,26 @@
 import { useState } from 'react';
-import { ExternalLink, X, CheckCircle, Eye, Clock, FolderGit2 } from 'lucide-react';
+import { ExternalLink, X, CheckCircle, Eye, Clock, FolderGit2, FileText } from 'lucide-react';
 import { config } from '../config.js';
 import { GithubIcon } from '../Icons.jsx';
 import { useModal } from '../hooks.js';
 import SectionHeader from './SectionHeader.jsx';
 
-const CATS = ['All', 'Full-Stack PHP/SQL', 'Frontend & UI'];
+const CATS = ['All', ...new Set(config.projects.map((p) => p.cat))];
+
+function DemoButton({ project, className }) {
+  if (project.demo) {
+    return (
+      <a href={project.demo} target="_blank" rel="noopener noreferrer" className={className}>
+        <ExternalLink className="w-4 h-4" /> Live Demo
+      </a>
+    );
+  }
+  return (
+    <span aria-disabled="true" title="Live demo link coming soon" className={`${className} opacity-60 cursor-not-allowed`}>
+      <ExternalLink className="w-4 h-4" /> Live Demo · Soon
+    </span>
+  );
+}
 
 function DetailModal({ project, onClose }) {
   useModal(onClose);
@@ -26,18 +41,19 @@ function DetailModal({ project, onClose }) {
             <Clock className="w-4 h-4 shrink-0" /> {project.status} — this project is under active development and will be available soon.
           </div>
         )}
-        {project.demo && (
-          <div className="flex flex-wrap items-center gap-3 mb-5">
-            <a href={project.demo} target="_blank" rel="noopener noreferrer" className="btn btn-primary text-xs px-4 py-2.5 inline-flex items-center gap-2">
-              <ExternalLink className="w-4 h-4" /> Live Demo
+        <div className="flex flex-wrap items-center gap-3 mb-5">
+          <DemoButton project={project} className="btn btn-primary text-xs px-4 py-2.5 inline-flex items-center gap-2" />
+          {project.pdf && (
+            <a href={project.pdf} target="_blank" rel="noopener noreferrer" className="btn btn-ghost text-xs px-4 py-2.5 inline-flex items-center gap-2">
+              <FileText className="w-4 h-4" /> Project PDF
             </a>
-            {project.repo && (
-              <a href={project.repo} target="_blank" rel="noopener noreferrer" className="btn btn-ghost text-xs px-4 py-2.5 inline-flex items-center gap-2">
-                <GithubIcon className="w-4 h-4" /> Source Code
-              </a>
-            )}
-          </div>
-        )}
+          )}
+          {project.repo && (
+            <a href={project.repo} target="_blank" rel="noopener noreferrer" className="btn btn-ghost text-xs px-4 py-2.5 inline-flex items-center gap-2">
+              <GithubIcon className="w-4 h-4" /> Source Code
+            </a>
+          )}
+        </div>
         <p className="text-[var(--text-soft)] text-sm leading-relaxed mb-5 font-medium">{project.full}</p>
         <h4 className="text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-3 font-sans">Key Features</h4>
         <div className="space-y-2 mb-6">
@@ -65,7 +81,7 @@ export default function Projects() {
     <section id="projects" className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader icon={FolderGit2} badge="Portfolio Showcase" title="Recent" accent="Projects"
-          text="Custom-built web applications using PHP, MySQL, JavaScript, and modern responsive CSS." />
+          text="Full-stack web applications built with React, Next.js, TypeScript and modern responsive CSS." />
 
         {/* Filter tabs */}
         <div className="fade-up flex flex-wrap justify-center gap-2 mb-10">
@@ -112,17 +128,16 @@ export default function Projects() {
                     <button onClick={() => setModal(p)} className="text-xs font-bold text-sky-700 hover:text-[var(--text)] flex items-center gap-1.5 transition-colors">
                       <Eye className="w-3.5 h-3.5" /> Details
                     </button>
-                    <div className="flex items-center gap-2">
-                      {p.status && <span className="text-[11px] font-bold px-3 py-1.5 rounded-xl bg-amber-100 border border-amber-300/30 text-amber-700">Coming Soon</span>}
-                      {!p.status && p.repo && (
+                    <div className="flex flex-wrap items-center justify-end gap-2">
+                      {p.repo && (
                         <a href={p.repo} target="_blank" rel="noopener noreferrer" aria-label="Source code" className="chip p-2"><GithubIcon className="w-4 h-4" /></a>
                       )}
-                      {!p.status && p.demo && (
-                        <a href={p.demo} target="_blank" rel="noopener noreferrer" aria-label="Live demo" className="chip px-3 py-1.5 text-xs text-sky-700 font-bold hover:text-sky-900 flex items-center gap-1.5">
-                          <span>Live Demo</span>
-                          <ExternalLink className="w-3.5 h-3.5" />
+                      {p.pdf && (
+                        <a href={p.pdf} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} project PDF`} className="chip px-3 py-1.5 text-xs text-sky-700 font-bold hover:text-sky-900 flex items-center gap-1.5">
+                          <FileText className="w-3.5 h-3.5" /> <span>PDF</span>
                         </a>
                       )}
+                      <DemoButton project={p} className="chip px-3 py-1.5 text-xs text-sky-700 font-bold hover:text-sky-900 flex items-center gap-1.5" />
                     </div>
                   </div>
                 </div>

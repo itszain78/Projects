@@ -24,7 +24,7 @@ function seoPlugin() {
         ...(siteUrl && { url: siteUrl, image: abs('/og-image.png') }),
         address: { '@type': 'PostalAddress', addressLocality: 'Multan', addressCountry: 'PK' },
         alumniOf: { '@type': 'CollegeOrUniversity', name: 'NFC Institute of Engineering & Technology, Multan' },
-        knowsAbout: ['PHP', 'MySQL', 'JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'Java', 'C++', 'REST API', 'Full-Stack Web Development'],
+        knowsAbout: ['TypeScript', 'JavaScript', 'React', 'Next.js', 'Supabase', 'PostgreSQL', 'Tailwind CSS', 'Node.js', 'PHP', 'MySQL', 'Python', 'Java', 'C++', 'REST API', 'Full-Stack Web Development'],
         sameAs: [config.github, config.linkedin, config.twitter].filter(Boolean),
       },
       {
@@ -39,7 +39,7 @@ function seoPlugin() {
         '@type': 'ProfessionalService',
         '@id': abs('/#service') || '#service',
         name: `${config.name} — Web Development Services`,
-        description: 'Full-stack React, Node.js, PHP and MySQL web applications, business websites, landing pages and admin panels.',
+        description: 'Full-stack React, Next.js and TypeScript web applications, online stores, management systems, business websites and admin panels.',
         ...(siteUrl && { url: siteUrl, image: abs('/og-image.png') }),
         provider: { '@id': abs('/#person') || '#person' },
         areaServed: 'Worldwide',

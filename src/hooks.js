@@ -218,16 +218,32 @@ export function useModal(onClose) {
 export function useEstimatorState(config) {
   const [scope, setScope] = useState(config.pricing[0].id);
   const [addons, setAddons] = useState([]);
+  const [currency, setCurrency] = useState('USD');
 
   const curr = config.pricing.find((p) => p.id === scope) || config.pricing[0];
   const picked = config.addons.filter((a) => addons.includes(a.id));
   const total = curr.base + picked.reduce((s, a) => s + a.price, 0);
   const maxTotal = Math.max(...config.pricing.map((p) => p.base)) + config.addons.reduce((s, a) => s + a.price, 0);
 
+  // Delivery estimate: the project type's day range plus the days each extra adds
+  const extraDays = picked.reduce((s, a) => s + (a.days || 0), 0);
+  const [d0, d1] = curr.days || [0, 0];
+  const days = [d0 + extraDays, d1 + extraDays];
+  const daysLabel = `${days[0]}–${days[1]} days`;
+
+  // Money helpers: prices are stored in USD; PKR uses config.pkrRate and rounds to the nearest Rs 500
+  const rate = config.pkrRate || 280;
+  const toPkr = (usd) => Math.round((usd * rate) / 500) * 500;
+  const convert = (usd) => (currency === 'PKR' ? toPkr(usd) : usd);
+  const convertedTotal = convert(curr.base) + picked.reduce((s, a) => s + convert(a.price), 0); // keeps the shown total equal to the sum of the shown lines
+  const symbol = currency === 'PKR' ? 'Rs ' : '$';
+  const money = (usd) => `${symbol}${convert(usd).toLocaleString('en-US')}`;
+
   const toggle = useCallback((id) => setAddons((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id])), []);
   const reset = useCallback(() => { setScope(config.pricing[0].id); setAddons([]); }, [config]);
 
-  const quoteText = `Hi Zain!\nI used your project estimator:\n- Type: ${curr.label}\n- Time: ${curr.time}\n- Add-ons: ${picked.map((a) => a.label).join(', ') || 'None'}\n- Estimate: $${total}\n\nLet's discuss!`;
+  const quoteText = `Hi Zain!\nI used your project estimator:\n- Type: ${curr.label}\n- Delivery: ${daysLabel}\n- Add-ons: ${picked.map((a) => a.label).join(', ') || 'None'}\n- Estimate: $${total} (about Rs ${toPkr(total).toLocaleString('en-US')})\n\nLet's discuss!`;
 
-  return { scope, setScope, addons, setAddons, toggle, reset, curr, picked, total, maxTotal, quoteText };
+  return { scope, setScope, addons, setAddons, toggle, reset, curr, picked, total, maxTotal, quoteText, currency, setCurrency, days, daysLabel, money, convert, convertedTotal, symbol };
 }
+

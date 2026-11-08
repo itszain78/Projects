@@ -4,10 +4,12 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
+import { normalize } from './router.jsx'
 
-// Any unknown path (e.g. /anything) shows the home page; normalise the URL back to "/".
-if (window.location.pathname !== '/') {
-  window.history.replaceState(null, '', '/' + window.location.search + window.location.hash)
+// Unknown paths and aliases (/work, /pricing ...) are rewritten to their real page.
+const canonical = normalize(window.location.pathname)
+if (window.location.pathname.replace(/\/+$/, '') !== (canonical === '/' ? '' : canonical)) {
+  window.history.replaceState(null, '', canonical + window.location.search + window.location.hash)
 }
 
 createRoot(document.getElementById('root')).render(

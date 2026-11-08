@@ -1,4 +1,5 @@
 import { ArrowUp, Sparkles } from 'lucide-react';
+import { Link } from '../router.jsx';
 import { GithubIcon, WhatsappIcon } from '../Icons.jsx';
 import { config } from '../config.js';
 
@@ -56,10 +57,10 @@ export default function Footer() {
             <ul className="space-y-2.5 text-xs font-semibold">
               {navLinks.map((l) => (
                 <li key={l.id}>
-                  <a href={`#${l.id}`} className="text-[var(--text-soft)] hover:text-[var(--text)] inline-flex items-center gap-2 group transition-colors">
+                  <Link to={`/${l.id}`} className="text-[var(--text-soft)] hover:text-[var(--text)] inline-flex items-center gap-2 group transition-colors">
                     <span className="h-px w-0 group-hover:w-4 transition-all duration-300" style={{ backgroundImage: 'var(--grad-sunset)' }} />
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

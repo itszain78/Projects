@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { Menu, X, Zap } from 'lucide-react';
 import { config } from '../config.js';
+import { usePath, navigate } from '../router.jsx';
 
 const links = [
+  { id: 'home',     label: 'Home' },
   { id: 'about',    label: 'About' },
   { id: 'skills',   label: 'Skills' },
   { id: 'services', label: 'Services' },
@@ -13,34 +15,17 @@ const links = [
 export default function Navbar({ onResume, onCalc }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState('');
+  const path = usePath();
+  const active = path === '/' ? 'home' : path.slice(1);
   const navRef = useRef(null);
   const btnRefs = useRef({});
   const [ind, setInd] = useState({ x: 0, w: 0, show: false });
 
   useEffect(() => {
-    let tops = [];
-    const measure = () => {
-      tops = links.map((l) => {
-        const el = document.getElementById(l.id);
-        return el ? { id: l.id, top: el.offsetTop, bottom: el.offsetTop + el.offsetHeight } : null;
-      }).filter(Boolean);
-    };
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      setScrolled(window.scrollY > 24);
-      const pos = window.scrollY + 220;
-      const hit = tops.find((t) => pos >= t.top && pos < t.bottom);
-      setActive(hit ? hit.id : '');
-    };
-    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
-    measure(); update();
-    const ro = new ResizeObserver(measure);
-    ro.observe(document.body);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', measure);
-    return () => { ro.disconnect(); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', measure); };
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // sliding gradient indicator follows the active link
@@ -58,7 +43,7 @@ export default function Navbar({ onResume, onCalc }) {
 
   const goto = (id) => {
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    navigate(id === 'home' ? '/' : '/' + id);
   };
 
   const initial = config.name.charAt(0).toUpperCase();
@@ -68,7 +53,7 @@ export default function Navbar({ onResume, onCalc }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 
         {/* Logo */}
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-3 group text-left" aria-label="Back to top">
+        <button onClick={() => navigate('/')} className="flex items-center gap-3 group text-left" aria-label="Home">
           <div className="w-10 h-10 rounded-xl p-[2px] shadow-lg shadow-sky-300/50 group-hover:rotate-[-8deg] group-hover:scale-110 transition-transform duration-500" style={{ backgroundImage: 'var(--grad-sunset)' }}>
             <div className="w-full h-full rounded-[10px] flex items-center justify-center font-display font-extrabold text-xl text-[var(--text)]" style={{ background: '#ffffff' }}>
               <span className="grad-text">{initial}</span>

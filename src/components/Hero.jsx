@@ -1,4 +1,5 @@
 import { useState, useRef, memo } from 'react';
+import { navigate } from '../router.jsx';
 import { ArrowRight, MessageSquare, Copy, Check, Sparkles, ChevronDown } from 'lucide-react';
 import { config } from '../config.js';
 import { useTypewriter } from '../hooks.js';
@@ -140,7 +141,7 @@ export default function Hero({ onCalc }) {
       </div>
 
       {/* Scroll cue */}
-      <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+      <button onClick={() => navigate('/about')}
         className="hidden sm:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-1 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors" aria-label="Scroll down">
         <span className="relative block w-6 h-10 rounded-full border border-sky-500/15 scroll-cue" />
         <ChevronDown className="w-4 h-4 animate-bounce" />

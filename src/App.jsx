@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import './index.css';
 import Navbar from './components/Navbar.jsx';
 import Hero from './components/Hero.jsx';
@@ -12,12 +12,22 @@ const ResumeModal = lazy(() => import('./components/ResumeModal.jsx'));
 const CalculatorModal = lazy(() => import('./components/CalculatorModal.jsx'));
 import { WhatsappIcon } from './Icons.jsx';
 import { config } from './config.js';
+import { usePath } from './router.jsx';
 import { useAutoFadeUp, useGlobalFx, useEstimatorState } from './hooks.js';
+
+const BASE_TITLE = typeof document !== 'undefined' ? document.title : '';
 
 export default function App() {
   const [showResume, setShowResume] = useState(false);
   const [showCalc, setShowCalc] = useState(false);
   const est = useEstimatorState(config); // shared by the inline estimator and the modal
+
+  const path = usePath();
+
+  useEffect(() => {
+    const names = { '/': '', '/about': 'About', '/skills': 'Skills', '/services': 'Services', '/projects': 'Projects', '/contact': 'Contact' };
+    document.title = names[path] ? `${names[path]} | ${config.name}` : BASE_TITLE;
+  }, [path]);
 
   useAutoFadeUp();   // scroll reveal for every .fade-up
   useGlobalFx();     // spotlight, 3D tilt, magnetic buttons, scroll progress
@@ -32,12 +42,21 @@ export default function App() {
         <Navbar onResume={() => setShowResume(true)} onCalc={() => setShowCalc(true)} />
 
         <main>
-          <Hero onCalc={() => setShowCalc(true)} onResume={() => setShowResume(true)} />
-          <About />
-          <Skills />
-          <Services est={est} onCalc={() => setShowCalc(true)} />
-          <Projects />
-          <Contact />
+          {path === '/' && (
+            <>
+              <Hero onCalc={() => setShowCalc(true)} onResume={() => setShowResume(true)} />
+              <About />
+              <Skills />
+              <Services est={est} onCalc={() => setShowCalc(true)} />
+              <Projects />
+              <Contact />
+            </>
+          )}
+          {path === '/about' && <div className="pt-16"><About /></div>}
+          {path === '/skills' && <div className="pt-16"><Skills /></div>}
+          {path === '/services' && <div className="pt-16"><Services est={est} onCalc={() => setShowCalc(true)} /></div>}
+          {path === '/projects' && <div className="pt-16"><Projects /></div>}
+          {path === '/contact' && <div className="pt-16"><Contact /></div>}
         </main>
 
         <Footer />
